@@ -4,6 +4,7 @@ if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi
 
+
 if [ $# -gt 0 ];then
     exec gosu $WWWUSER "$@"
 else
