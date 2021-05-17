@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ ! -z "$XDEBUGIDEKEY" ]; then
+  echo "xdebug.idekey=$XDEBUGIDEKEY" >> /etc/php/8.0/cli/conf.d/99-sail.ini
+fi
+
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi

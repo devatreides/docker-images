@@ -1,6 +1,5 @@
 FROM php:8.0-fpm
 
-ARG XDEBUGIDEKEY
 ARG WWWGROUP
 ARG user=sail
 
@@ -47,8 +46,6 @@ RUN apt-get -y autoremove \
 RUN pecl channel-update https://pecl.php.net/channel.xml \
     && pecl install swoole
 
-RUN yes | pecl install xdebug
-
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -64,10 +61,7 @@ RUN chmod -R ugo+rw /var/log/xdebug.log
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 COPY php.ini /etc/php/8.0/cli/conf.d/99-sail.ini
-RUN echo ${XDEBUGIDEKEY} >> /etc/php/8.0/cli/conf.d/99-sail.ini
-
 RUN chmod +x /usr/local/bin/start-container
 
 ENTRYPOINT [ "start-container" ]
