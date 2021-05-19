@@ -36,6 +36,7 @@ RUN install-php-extensions gd \
     bcmath \
     soap \
     msgpack \
+    pcntl \
     igbinary \
     redis
 
