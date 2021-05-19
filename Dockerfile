@@ -39,20 +39,23 @@ RUN install-php-extensions gd \
     igbinary \
     redis
 
+RUN pecl channel-update https://pecl.php.net/channel.xml \
+    && pecl install swoole \
+    && docker-php-ext-enable swoole
+
 RUN yes | pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && pecl clear-cache \
+    && rm -rf /tmp/* /var/tmp/*
 
 RUN apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN pecl channel-update https://pecl.php.net/channel.xml \
-    && pecl install swoole
 
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
