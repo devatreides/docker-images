@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - \
+    && apt-get install -y nodejs
+
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync
 
