@@ -43,9 +43,7 @@ RUN install-php-extensions gd \
     igbinary \
     redis
 
-RUN pecl channel-update https://pecl.php.net/channel.xml \
-    && pecl install swoole \
-    && docker-php-ext-enable swoole
+RUN pecl channel-update https://pecl.php.net/channel.xml
 
 RUN yes | pecl install xdebug \
     && docker-php-ext-enable xdebug \
