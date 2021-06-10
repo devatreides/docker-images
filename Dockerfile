@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:7.3-fpm
 
 ARG WWWGROUP
 ARG user=sail
@@ -21,9 +21,6 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - \
-    && apt-get install -y nodejs
-
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync
 
@@ -39,21 +36,18 @@ RUN install-php-extensions gd \
     bcmath \
     soap \
     msgpack \
+    intl \
     pcntl \
     igbinary \
     redis
 
-RUN pecl channel-update https://pecl.php.net/channel.xml
-
-RUN yes | pecl install xdebug \
+RUN pecl channel-update https://pecl.php.net/channel.xml \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && pecl clear-cache \
-    && rm -rf /tmp/* /var/tmp/*
+    && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apt-get -y autoremove \
     && apt-get clean \
@@ -74,7 +68,7 @@ RUN chmod -R ugo+rw /var/log/xdebug.log
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php/8.0/cli/conf.d/99-sail.ini
+COPY php.ini /etc/php/7.3/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
 ENTRYPOINT [ "start-container" ]
