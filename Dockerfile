@@ -72,9 +72,10 @@ RUN mkdir -p /home/${user}/.composer && \
 RUN touch /var/log/xdebug.log
 RUN chmod -R ugo+rw /var/log/xdebug.log
 
+COPY php.ini /usr/local/etc/php/php.ini
+
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php/8.0/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
 ENTRYPOINT [ "start-container" ]
