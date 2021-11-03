@@ -4,6 +4,15 @@ if [ ! -z "$XDEBUGIDEKEY" ]; then
   echo "xdebug.idekey=$XDEBUGIDEKEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
+if [ ! -z "$XDEBUGMODE" ]; then
+
+    debugmode = "xdebug.mode=$XDEBUGMODE"
+else
+    debugmode = "xdebug.mode=off"
+fi
+
+echo "$debugmode" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi
