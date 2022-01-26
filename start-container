@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
-if [ ! -z "$XDEBUGIDEKEY" ]; then
-  echo "xdebug.idekey=$XDEBUGIDEKEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+if [ ! -z "$XDEBUG_IDE_KEY" ]; then
+  echo "xdebug.idekey=$XDEBUG_IDE_KEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
-if [ ! -z "$XDEBUGMODE" ]; then 
-    echo "xdebug.mode=$XDEBUGMODE" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+if [ ! -z "$XDEBUG_CLIENT_HOST" ]; then
+  echo "xdebug.client_host=$XDEBUG_CLIENT_HOST" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 else
-    echo "xdebug.mode=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+  echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+if [ ! -z "$XDEBUG_MODE" ]; then
+
+    debugmode = "xdebug.mode=$XDEBUG_MODE"
+else
+    debugmode = "xdebug.mode=off"
 fi
 
 if [ ! -z "$WWWUSER" ]; then
