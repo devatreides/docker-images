@@ -8,6 +8,7 @@ if [ ! -z "$XDEBUG_CLIENT_HOST" ]; then
   echo "xdebug.client_host=$XDEBUG_CLIENT_HOST" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 else
   echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+fi
 
 if [ ! -z "$XDEBUG_MODE" ]; then
 
