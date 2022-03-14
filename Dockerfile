@@ -61,6 +61,8 @@ RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN chmod 777 /var/log/xdebug.log
+
 RUN useradd -m ${user}
 RUN usermod -a -G root,www-data ${user}
 

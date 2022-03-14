@@ -11,10 +11,9 @@ else
 fi
 
 if [ ! -z "$XDEBUG_MODE" ]; then
-
-    debugmode = "xdebug.mode=$XDEBUG_MODE"
+    echo "xdebug.mode=$XDEBUG_MODE" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 else
-    debugmode = "xdebug.mode=off"
+    echo "xdebug.mode=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
 if [ ! -z "$WWWUSER" ]; then
