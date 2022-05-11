@@ -16,6 +16,12 @@ else
     echo "xdebug.mode=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
+if [ ! -z "$SUPERVISOR_SERVICES" ]; then
+    cat supervisor/laravel supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
+else
+    cat supervisor/laravel >> /etc/supervisor/conf.d/supervisord.conf
+fi
+
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi
