@@ -1,0 +1,9 @@
+[program:cron]
+command=/usr/local/bin/php -d variables_order=EGPCS /var/www/html/artisan schedule:run >> /dev/null 2>&1
+user=sail
+environment=LARAVEL_SAIL="1"
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
