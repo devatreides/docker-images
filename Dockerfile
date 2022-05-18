@@ -1,6 +1,5 @@
 FROM php:8.1-fpm
 
-ARG WWWGROUP
 ARG user=sail
 
 WORKDIR /var/www/html
@@ -30,6 +29,7 @@ RUN install-php-extensions gd \
     memcached \
     imap \
     pdo_mysql \
+    pgsql \
     mbstring \
     xml \
     zip \
@@ -60,7 +60,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN chmod 777 /var/log/xdebug.log
 
-RUN useradd -m ${user}
+RUN useradd -m -u 1001 ${user}
 RUN usermod -a -G root,www-data ${user}
 
 RUN mkdir -p /home/${user}/.composer && \
