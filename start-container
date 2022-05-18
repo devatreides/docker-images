@@ -17,9 +17,9 @@ else
 fi
 
 if [ ! -z "$SUPERVISOR_SERVICES" ]; then
-    cat supervisor/laravel supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
+    cat /home/sail/supervisor/laravel /home/sail/supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' /home/sail/supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
 else
-    cat supervisor/laravel >> /etc/supervisor/conf.d/supervisord.conf
+    cat laravel >> /etc/supervisor/conf.d/supervisord.conf
 fi
 
 if [ ! -z "$WWWUSER" ]; then
