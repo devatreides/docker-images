@@ -25,13 +25,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync
 
 RUN install-php-extensions gd \
     xdebug \
-    curl \
     memcached \
     imap \
     pdo_mysql \
-    pgsql \
-    mbstring \
-    xml \
+    pdo_pgsql \
     zip \
     bcmath \
     soap \
@@ -40,14 +37,9 @@ RUN install-php-extensions gd \
     igbinary \
     redis
 
-RUN pecl channel-update https://pecl.php.net/channel.xml
-
-RUN yes | pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+RUN echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && pecl clear-cache \
     && rm -rf /tmp/* /var/tmp/*
 
 RUN apt-get -y autoremove \
@@ -57,8 +49,6 @@ RUN apt-get -y autoremove \
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-RUN chmod 777 /var/log/xdebug.log
 
 RUN useradd -m -u 1001 ${user}
 RUN usermod -a -G root,www-data ${user}
