@@ -9,26 +9,3 @@ if [ ! -z "$XDEBUG_CLIENT_HOST" ]; then
 else
   echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
-
-if [ ! -z "$XDEBUG_MODE" ]; then
-    echo "xdebug.mode=$XDEBUG_MODE" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-else
-    echo "xdebug.mode=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-fi
-
-if [ ! -z "$SUPERVISOR_SERVICES" ]; then
-    cat /home/sail/supervisor/laravel /home/sail/supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' /home/sail/supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
-else
-    cat laravel >> /etc/supervisor/conf.d/supervisord.conf
-fi
-
-if [ ! -z "$WWWUSER" ]; then
-    usermod -u $WWWUSER sail
-fi
-
-
-if [ $# -gt 0 ];then
-    exec gosu $WWWUSER "$@"
-else
-    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-fi

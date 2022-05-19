@@ -1,9 +1,0 @@
-[program:cron]
-command=/bin/sh -c "php /var/www/html/artisan schedule:run --verbose --no-interaction" >> /dev/null 2>&1
-user=sail
-environment=LARAVEL_SAIL="1"
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-
