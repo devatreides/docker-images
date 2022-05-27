@@ -1,7 +1,5 @@
 FROM php:8.1-fpm
 
-ARG user=sail
-
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
@@ -50,12 +48,6 @@ RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN useradd -m -u 1001 ${user}
-RUN usermod -a -G root,www-data ${user}
-
-RUN mkdir -p /home/${user}/.composer && \
-    chown -R ${user}:${user} /home/${user}
-
 RUN touch /var/log/xdebug.log
 RUN chmod -R ugo+rw /var/log/xdebug.log
 
@@ -63,7 +55,7 @@ COPY php.ini /usr/local/etc/php/php.ini
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY supervisor/ /home/${user}/supervisor/
+COPY supervisor/ /tmp/supervisor/
 RUN chmod +x /usr/local/bin/start-container
 
 ENTRYPOINT [ "start-container" ]
