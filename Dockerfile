@@ -1,8 +1,5 @@
 FROM php:7.3-fpm
 
-ARG WWWGROUP
-ARG user=sail
-
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
@@ -54,12 +51,6 @@ RUN apt-get -y autoremove \
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-RUN useradd -m ${user}
-RUN usermod -a -G root,www-data ${user}
-
-RUN mkdir -p /home/${user}/.composer && \
-    chown -R ${user}:${user} /home/${user}
 
 RUN touch /var/log/xdebug.log
 RUN chmod -R ugo+rw /var/log/xdebug.log

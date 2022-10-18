@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+useradd -m -u $USERID sail
+usermod -a -G root,www-data sail
+
+mkdir -p /home/sail/.composer && \
+chown -R sail:sail /home/sail
+
 if [ ! -z "$XDEBUG_IDE_KEY" ]; then
   echo "xdebug.idekey=$XDEBUG_IDE_KEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
@@ -11,18 +17,20 @@ else
 fi
 
 if [ ! -z "$XDEBUG_MODE" ]; then
-    debugmode = "xdebug.mode=$XDEBUG_MODE"
+    echo "xdebug.mode=$XDEBUG_MODE" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 else
-    debugmode = "xdebug.mode=off"
+    echo "xdebug.mode=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
-if [ ! -z "$WWWUSER" ]; then
-    usermod -u $WWWUSER sail
+if [ ! -z "$SUPERVISOR_SERVICES" ]; then
+    cat /tmp/supervisor/laravel /tmp/supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' /tmp/supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
+else
+    cat laravel >> /etc/supervisor/conf.d/supervisord.conf
 fi
 
 
 if [ $# -gt 0 ];then
-    exec gosu $WWWUSER "$@"
+    exec gosu $USERID "$@"
 else
     /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
