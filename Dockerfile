@@ -55,6 +55,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN touch /var/log/xdebug.log
 RUN chmod -R ugo+rw /var/log/xdebug.log
 
+COPY php.ini /usr/local/etc/php/php.ini
+
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY supervisor/ /tmp/supervisor/
