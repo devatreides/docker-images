@@ -23,7 +23,7 @@ else
 fi
 
 if [ ! -z "$SUPERVISOR_SERVICES" ]; then
-    cat /tmp/supervisor/laravel /tmp/supervisor/$( echo $SUPERVISOR_SERVICES | tr ',' ' /tmp/supervisor/') >> /etc/supervisor/conf.d/supervisord.conf
+    cat /tmp/supervisor/laravel /tmp/supervisor/$(echo "${SUPERVISOR_SERVICES//,/ /tmp/supervisor/}") >> /etc/supervisor/conf.d/supervisord.conf
 else
     cat laravel >> /etc/supervisor/conf.d/supervisord.conf
 fi
