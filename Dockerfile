@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    wget \
+    libpq-dev
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync
@@ -25,6 +27,8 @@ RUN install-php-extensions gd \
     xdebug \
     memcached \
     imap \
+    pdo \
+    pgsql \
     pdo_mysql \
     pdo_pgsql \
     zip \
@@ -34,6 +38,11 @@ RUN install-php-extensions gd \
     pcntl \
     igbinary \
     redis
+
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+    && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && apt-get update \
+    && apt-get install -y postgresql-client-14
 
 RUN echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
