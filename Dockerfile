@@ -11,6 +11,8 @@ RUN install-php-extensions gd \
     pcntl \
     igbinary
 
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 RUN echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
