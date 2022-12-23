@@ -1,5 +1,7 @@
 FROM php:7.4-fpm
 
+WORKDIR /usr/src/myapp
+
 RUN apt-get update && apt-get install -y \
     gnupg \
     gosu \
