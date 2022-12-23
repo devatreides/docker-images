@@ -1,6 +1,6 @@
 [program:queued_jobs]
 command=/usr/local/bin/php -d variables_order=EGPCS /var/www/html/artisan queue:work --tries=3 --timeout=60
-user=sail
+user=%(ENV_USERNAME)s
 environment=LARAVEL_SAIL="1"
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
